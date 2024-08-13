@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Movie Website</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: black;
+    color: white;
+    background-image: url('https://i.ibb.co/nQ2QQm2/CINEWAVE-CINEMA-1.png'); /* Add your background image URL here */
+    background-size: cover;
+    background-position: center;
+    position: relative;
+  }
+  body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Adjust the last value to control the dimness */
+    z-index: -1;
+  }
+  .header {
+    text-align: center;
+    padding: 20px;
+  }
+  .header h1 {
+    font-size: 3em;
+    color: white;
+    text-shadow: 0 0 10px white;
+    transform: rotate(-10deg);
+  }
+  .search-bar {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+    transition: margin 0.3s;
+  }
+  .search-bar input {
+    width: 50%;
+    padding: 10px;
+    font-size: 1.2em;
+    border-radius: 25px;
+    border: none;
+  }
+  .search-bar.up {
+    margin: 10px 0;
+  }
+  .movies {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 20px;
+  }
+  .movie-selection {
+    margin: 10px;
+    transition: transform 0.3s;
+    position: relative;
+  }
+  .movie-selection img {
+    width: 120px;
+    height: 200px;
+    cursor: pointer;
+    transition: filter 0.3s;
+  }
+  .movie-selection:hover img {
+    filter: brightness(0.5);
+  }
+  .movie-selection:hover .movie-title {
+    opacity: 1;
+  }
+  .movie-title {
+    position: absolute;
+    bottom: 10px;
+    left: 0; /* Align to the left */
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 10px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>FILMZONE</h1>
+</div>
+
+<div class="search-bar" id="searchBar">
+  <input type="text" id="searchInput" placeholder="Simple, ⚡Fast⚡, ⚡Lightning⚡ speed movie website; Simple search..." oninput="filterMovies()" onkeypress="searchMovies(event)">
+</div>
+
+<div class="movies" id="moviesContainer">
+  <!-- Movie selections will be dynamically inserted here -->
+</div>
+
+<script>
+  const allMovies = [
+    { src: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQk5NnsTT-U0criWZIV8_wy57w5zd6iOedaqg&s', alt: 'Movie 4', title: 'Toy Story', url: 'https://drive.google.com/file/d/1Z_llFEaqJny8BXoIxgsItNBtjo60JdWu/preview' },
+    { src: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQs8vNS7Kro_qSUr7fueB5quxFBJpBI_HFNgw&s', alt: 'Movie 5', title: 'Toy Story 2', url: 'https://drive.google.com/file/d/1k3RVDc_Vah1H9lFsXQZJ6mE3KqdDcK_T/preview' },
+    { src: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmvGhglHjSlAAj_fmsQ2BpVUduaor6K8AaPA&s', alt: 'Movie 6', title: 'Toy Story 3', url: 'https://drive.google.com/file/d/13msxxmyEco7CRBkO_Ju1SMx5KK4r4Su8/preview' },
+    { src: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrbgv7Oq8ZZ0FhEs570_TKAKyL1bmHrvq0Dw&s', alt: 'Movie 7', title: 'Toy Story 4', url: 'https://drive.google.com/file/d/1bFUbsQ9VEazeCt5l_VBVDtjCsbJmZ_Vr/preview' },
+    { src: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTxOlZdV1bOZB8W2Zj4T_j5s5bTAQdnkzz39w&s', alt: 'Movie 7', title: 'Deadpool', url: 'https://drive.google.com/file/d/1c7EYuwSYMinLZo-4PXxjnHKCZySmrxVg/preview' },
+    { src: 'https://i.ebayimg.com/images/g/6zcAAOSwiJ9jObVr/s-l1600.jpg', alt: 'Movie 7', title: 'Deadpool 2', url: 'https://drive.google.com/file/d/1NGtIqan_H9hflLfF1bwHiKo71ksrs49b/preview' },
+    { src: 'https://i.etsystatic.com/25432943/r/il/35bfe3/5786627716/il_570xN.5786627716_kps6.jpg', alt: 'Movie 7', title: 'Deadpool 3- Wolverine', url: 'https://drive.google.com/file/d/1bEo8Q5NG0ac257TeBM1Tbni44hXBQZ6j/preview' },
+    { src: 'https://lumiere-a.akamaihd.net/v1/images/p_insideout_19751_af12286c.jpeg', alt: 'Movie 7', title: 'Inside Out', url: 'https://drive.google.com/file/d/1rY-7y04-XJZZ3dw8LJ7UxfntM3OTi6qe/preview' },
+    { src: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOFf7mc34eGRh9SoE2-iKmo-Rgvnt8K9j8Xg&s', alt: 'Movie 7', title: 'Inside Out 2', url: 'https://drive.google.com/file/d/1SN5RE9ydgSxMs08IqtlLO95INGoRCcAE/preview' },
+  ];
+
+  function searchMovies(event) {
+    if (event.key === 'Enter') {
+      const query = document.getElementById('searchInput').value.toLowerCase();
+      window.location.href = query + '.html';
+    }
+  }
+
+  function filterMovies() {
+    const query = document.getElementById('searchInput').value.toLowerCase();
+    const moviesContainer = document.getElementById('moviesContainer');
+    const searchBar = document.getElementById('searchBar');
+    searchBar.classList.add('up');
+    moviesContainer.innerHTML = ''; // Clear previous movies
+
+    allMovies.forEach(movie => {
+      if (movie.title.toLowerCase().includes(query)) {
+        const movieElement = document.createElement('div');
+        movieElement.className = 'movie-selection';
+        movieElement.innerHTML = `
+          <img src="${movie.src}" alt="${movie.alt}" title="${movie.title}" onclick="openUrl('${movie.url}')">
+          <div class="movie-title">${movie.title}</div>
+        `;
+        moviesContainer.appendChild(movieElement);
+      }
+    });
+  }
+
+  function openUrl(url) {
+    window.location.href = url;
+  }
+</script>
+
+Simple, ⚡Fast⚡, ⚡Lightning⚡ speed movie website. [This is just the "test" program, we will be using a real website like Netlify now] OVER 100+ MOVIES TODAY!
+
+
+<a href="" title="free counter"><img src="https://counter2.optistats.ovh/private/freecounterstat.php?c=3y82xajdpk36r5qxxqbg4tqksllsncqx" border="0" title="free counter" alt="free counter"></a>
+
+</body>
+</html>
