@@ -55,8 +55,11 @@
   .movies {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: flex-start; /* Align movies to the left */
     padding: 20px;
+  }
+  .movies.center {
+    justify-content: center; /* Center movies on search */
   }
   .movie-selection {
     margin: 10px;
@@ -113,6 +116,7 @@
     { src: 'https://i.etsystatic.com/25432943/r/il/35bfe3/5786627716/il_570xN.5786627716_kps6.jpg', alt: 'Movie 7', title: 'Deadpool 3- Wolverine', url: 'https://drive.google.com/file/d/1bEo8Q5NG0ac257TeBM1Tbni44hXBQZ6j/preview' },
     { src: 'https://lumiere-a.akamaihd.net/v1/images/p_insideout_19751_af12286c.jpeg', alt: 'Movie 7', title: 'Inside Out', url: 'https://drive.google.com/file/d/1rY-7y04-XJZZ3dw8LJ7UxfntM3OTi6qe/preview' },
     { src: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOFf7mc34eGRh9SoE2-iKmo-Rgvnt8K9j8Xg&s', alt: 'Movie 7', title: 'Inside Out 2', url: 'https://drive.google.com/file/d/1SN5RE9ydgSxMs08IqtlLO95INGoRCcAE/preview' },
+    { src: 'https://www.movieposters.com/cdn/shop/files/twisters_477x.jpg?v=1708533841', alt: 'Movie 7', title: 'Twisters', url: 'https://drive.google.com/file/d/14_s96ZSrnA-14ORKnLGFAvRX3zZsQhMU/preview' },
   ];
 
   function searchMovies(event) {
@@ -127,6 +131,11 @@
     const moviesContainer = document.getElementById('moviesContainer');
     const searchBar = document.getElementById('searchBar');
     searchBar.classList.add('up');
+    if (query) {
+      moviesContainer.classList.add('center'); // Center movies on search
+    } else {
+      moviesContainer.classList.remove('center'); // Remove center class if search is empty
+    }
     moviesContainer.innerHTML = ''; // Clear previous movies
 
     allMovies.forEach(movie => {
@@ -148,6 +157,50 @@
 </script>
 
 Simple, ⚡Fast⚡, ⚡Lightning⚡ speed movie website. [This is just the "test" program, we will be using a real website like Netlify now] OVER 100+ MOVIES TODAY!
+
+<a href="" title="free counter"><img src="https://counter2.optistats.ovh/private/freecounterstat.php?c=3y82xajdpk36r5qxxqbg4tqksllsncqx" border="0" title="free counter" alt="free counter"></a>
+
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  .container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    background: transparent;
+    padding: 10px;
+  }
+  .credits-box {
+    background-color: black;
+    color: white;
+    border-radius: 10px;
+    padding: 5px 10px;
+    margin-bottom: 5px;
+  }
+  .circle-link {
+    display: inline-block;
+    background-color: black;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    margin-right: 5px;
+    background-size: cover;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="credits-box">Credits</div>
+  <a href="https://github.com/FlixifyTVisbackformoregithub/ninjastelthy" target="_blank" class="circle-link" style="background-image: url('https://avatars.githubusercontent.com/u/174386388?v=4');"></a>
+  <a href="https://github.com/1056516" target="_blank" class="circle-link" style="background-image: url('https://avatars.githubusercontent.com/u/159073116?s=400&u=a2c46630df116cd81e54ff0d6e03d4a9c2793772&v=4');"></a>
+</div>
+
+</body>
+</html>
+
 
 </body>
 </html>
