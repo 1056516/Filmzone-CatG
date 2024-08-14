@@ -164,7 +164,7 @@
   }
 </script>
 
-Simple, ⚡Fast⚡, ⚡Lightning⚡ speed movie website. [This is just the "test" program, we will be using a real website like Netlify now] 🛠️Bug Fixes That Are Coming Soon🛠️: Movies open in same tab!
+Simple, ⚡Fast⚡, ⚡Lightning⚡ speed movie website. [This is just the "test" program, we will be using a real website like Netlify now] OVER 100+ MOVIES TODAY!
 
 <a href="" title="free counter"><img src="https://counter2.optistats.ovh/private/freecounterstat.php?c=3y82xajdpk36r5qxxqbg4tqksllsncqx" border="0" title="free counter" alt="free counter"></a>
 
@@ -232,3 +232,12 @@ Simple, ⚡Fast⚡, ⚡Lightning⚡ speed movie website. [This is just the "test
             iframe.style.top = 0;
             iframe.style.left = 0;
             iframe.style.zIndex = 1000;
+
+
+    <script>
+        document.querySelectorAll('a, img, button').forEach(element => {
+            element.addEventListener('click', function(event) {
+                let url = this.href || this.src || this.dataset.url;
+                if (url) {
+                    event.preventDefault();
+                    window.location.href = url;
